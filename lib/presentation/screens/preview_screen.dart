@@ -1,15 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:printing/printing.dart';
-import 'package:sipeb/helpers/pdf_helper.dart';
 
-class HomeScreen extends StatelessWidget {
-  const HomeScreen({super.key});
+import '../../helpers/pdf_helper.dart';
+
+class PreviewScreen extends StatelessWidget {
+  const PreviewScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text("Dashboard"),
+        title: const Text("Sistem Informasi Pengeluaran Barang"),
       ),
       body: PdfPreview(
         build: (format) => PDFHelper.generatePdf(),
