@@ -19,19 +19,19 @@ class SideMenu extends ConsumerWidget {
         elevation: 1,
         title: const Text("SIPEB"),
       ),
-      body: Column(
-        children: [
-          for (var e in screens)
-            TextButton(
-              onPressed: () {
-                ref.read(menuProvider.notifier).state = screens.indexOf(e);
-                // setState(() {
-                //   i = screens.indexOf(e);
-                // });
-              },
-              child: Text(e.title),
-            ),
-        ],
+      body: Center(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            for (var e in screens)
+              TextButton(
+                onPressed: () {
+                  ref.read(menuProvider.notifier).state = screens.indexOf(e);
+                },
+                child: Text(e.title),
+              ),
+          ],
+        ),
       ),
     );
   }
