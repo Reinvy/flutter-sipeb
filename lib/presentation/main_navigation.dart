@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:sipeb/models/screen_model.dart';
+import 'package:sipeb/data/models/screen_model.dart';
 import 'package:sipeb/presentation/providers/menu_provider.dart';
 import 'package:sipeb/presentation/screens/home_screen.dart';
 import 'package:sipeb/presentation/screens/memo_permintaan_screen.dart';

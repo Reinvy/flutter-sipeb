@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:pdf/pdf.dart';
 import 'package:printing/printing.dart';
-import 'package:sipeb/models/permintaan_model.dart';
+import 'package:sipeb/data/models/permintaan_model.dart';
 
 import '../../helpers/pdf_helper.dart';
 

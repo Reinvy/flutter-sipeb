@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:sipeb/presentation/providers/menu_provider.dart';
 
-import '../../models/screen_model.dart';
+import '../../data/models/screen_model.dart';
 
 class SideMenu extends ConsumerWidget {
   const SideMenu({

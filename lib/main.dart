@@ -15,7 +15,10 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      theme: ThemeData(colorSchemeSeed: Colors.green[200], useMaterial3: false),
+      theme: ThemeData(
+        colorSchemeSeed: Colors.green[200],
+        useMaterial3: false,
+      ),
       home: const MainNavigation(),
     );
   }
