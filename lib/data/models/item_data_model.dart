@@ -1,6 +1,7 @@
 class ItemDataModel {
   int? id;
   int permintaanId;
+  DateTime? date;
   final String namaBarang;
   final int fisik;
   final String satuan;
@@ -9,6 +10,7 @@ class ItemDataModel {
   ItemDataModel({
     required this.id,
     required this.permintaanId,
+    required this.date,
     required this.namaBarang,
     required this.fisik,
     required this.satuan,
@@ -19,6 +21,7 @@ class ItemDataModel {
     return ItemDataModel(
       id: map['id'],
       permintaanId: map['permintaanId'],
+      date: DateTime.parse(map['date']),
       namaBarang: map['namaBarang'],
       fisik: map['fisik'],
       satuan: map['satuan'],
@@ -30,6 +33,7 @@ class ItemDataModel {
     return {
       'id': id,
       'permintaanId': permintaanId,
+      'date': date?.toIso8601String(),
       'namaBarang': namaBarang,
       'fisik': fisik,
       'satuan': satuan,

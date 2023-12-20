@@ -135,12 +135,17 @@ class AddItemWidget extends ConsumerWidget {
                           ItemDataModel(
                             id: null,
                             permintaanId: 0,
+                            date: null,
                             namaBarang: namaC.text,
                             fisik: int.parse(fisikC.text),
                             satuan: satuanC.text,
                             keperluan: stasiunC.text,
                           ),
                         ];
+                        namaC.clear();
+                        fisikC.clear();
+                        satuanC.clear();
+                        stasiunC.clear();
                       },
                       child: const Icon(Icons.add),
                     ),

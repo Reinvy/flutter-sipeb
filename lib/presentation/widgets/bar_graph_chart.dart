@@ -11,7 +11,7 @@ class BarGraphCard extends StatelessWidget {
   final List<BarGraphModel> data = [
     BarGraphModel(
         lable: "PB 16",
-        color: const Color.fromARGB(248, 43, 87, 245),
+        color: Color.fromARGB(248, 197, 252, 44),
         graph: [
           GraphModel(x: 0, y: 8),
           GraphModel(x: 1, y: 10),
@@ -33,18 +33,6 @@ class BarGraphCard extends StatelessWidget {
           GraphModel(x: 5, y: 5),
           GraphModel(x: 6, y: 5),
         ]),
-    BarGraphModel(
-        lable: "Reservasi",
-        color: const Color.fromARGB(255, 69, 175, 228),
-        graph: [
-          GraphModel(x: 0, y: 7),
-          GraphModel(x: 1, y: 10),
-          GraphModel(x: 2, y: 7),
-          GraphModel(x: 3, y: 4),
-          GraphModel(x: 4, y: 4),
-          GraphModel(x: 5, y: 10),
-          GraphModel(x: 6, y: 10),
-        ]),
   ];
 
   final lable = ['S', 'S', 'R', 'K', 'J', 'S', 'M'];
@@ -56,7 +44,7 @@ class BarGraphCard extends StatelessWidget {
       shrinkWrap: true,
       physics: const ScrollPhysics(),
       gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-          crossAxisCount: 3,
+          crossAxisCount: 2,
           crossAxisSpacing: 15,
           mainAxisSpacing: 12.0,
           childAspectRatio: 5 / 4),
@@ -94,7 +82,7 @@ class BarGraphCard extends StatelessWidget {
                               child: Text(
                                 lable[value.toInt()],
                                 style: const TextStyle(
-                                    fontSize: 11,
+                                    fontSize: 12,
                                     color: Colors.grey,
                                     fontWeight: FontWeight.w500),
                               ),
@@ -123,7 +111,7 @@ class BarGraphCard extends StatelessWidget {
         .map((point) => BarChartGroupData(x: point.x.toInt(), barRods: [
               BarChartRodData(
                 toY: point.y,
-                width: 12,
+                width: 20,
                 color: color.withOpacity(point.y.toInt() > 4 ? 1 : 0.4),
                 borderRadius: const BorderRadius.only(
                   topLeft: Radius.circular(3.0),

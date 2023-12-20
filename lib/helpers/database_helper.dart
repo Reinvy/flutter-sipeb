@@ -44,6 +44,7 @@ class DatabaseHelper {
     await db.execute('CREATE TABLE itemData('
         'id INTEGER PRIMARY KEY,'
         'permintaanId INTEGER,'
+        'date TEXT,'
         'namaBarang TEXT,'
         'fisik INTEGER,'
         'satuan TEXT,'
@@ -57,6 +58,8 @@ class DatabaseHelper {
     int id = await db.insert('permintaan', permintaan.toMap());
     for (ItemDataModel item in permintaan.items) {
       item.permintaanId = id;
+      item.date = permintaan.date;
+
       await db.insert('itemData', item.toMap());
     }
     return id;
@@ -86,29 +89,42 @@ class DatabaseHelper {
     }
   }
 
-  // Future<void> updatePermintaan(PermintaanModel permintaan) async {
-  //   Database db = await initDatabase();
-  //   await db.update('permintaan', permintaan.toMap(),
-  //       where: 'id = ?', whereArgs: [permintaan.id]);
+  Future<List<ItemDataModel>> getAllItemData() async {
+    try {
+      Database db = await initDatabase();
+      List<Map<String, dynamic>> itemMaps = await db.query('itemData');
+      List<ItemDataModel> items = itemMaps.map((itemMap) {
+        return ItemDataModel.fromMap(itemMap);
+      }).toList();
 
-  //   // Update items
-  //   List<Map<String, dynamic>> itemMaps = await db.query('itemData',
-  //       where: 'permintaanId = ?', whereArgs: [permintaan.id]);
-  //   List<ItemDataModel> items = itemMaps.map((itemMap) {
-  //     return ItemDataModel.fromMap(itemMap);
-  //   }).toList();
+      return items;
+    } catch (e) {
+      print(e);
+      rethrow;
+    }
+  }
 
-  //   for (ItemDataModel item in items) {
-  //     item.isDeleted = true;
-  //     await db.update('itemData', item.toMap(),
-  //         where: 'id = ?', whereArgs: [item.id]);
-  //   }
+  Future<void> updatePermintaan(PermintaanModel permintaan) async {
+    Database db = await initDatabase();
+    await db.update('permintaan', permintaan.toMap(),
+        where: 'id = ?', whereArgs: [permintaan.id]);
 
-  //   for (ItemDataModel item in permintaan.items) {
-  //     item.permintaanId = permintaan.id;
-  //     await db.insert('itemData', item.toMap());
-  //   }
-  // }
+    List<Map<String, dynamic>> itemMaps = await db.query('itemData',
+        where: 'permintaanId = ?', whereArgs: [permintaan.id]);
+    List<ItemDataModel> items = itemMaps.map((itemMap) {
+      return ItemDataModel.fromMap(itemMap);
+    }).toList();
+
+    for (ItemDataModel item in items) {
+      await db.update('itemData', item.toMap(),
+          where: 'id = ?', whereArgs: [item.id]);
+    }
+
+    for (ItemDataModel item in permintaan.items) {
+      item.permintaanId = permintaan.id!;
+      await db.insert('itemData', item.toMap());
+    }
+  }
 
   Future<void> deletePermintaan(int id) async {
     Database db = await initDatabase();

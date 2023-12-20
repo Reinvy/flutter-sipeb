@@ -17,8 +17,9 @@ class PreviewScreen extends StatelessWidget {
         title: const Text("Preview"),
       ),
       body: PdfPreview(
-        build: (format) => PDFHelper.generatePdf(format, permintaan),
+        build: (format) => PDFHelper.generatePB16Pdf(format, permintaan),
         allowSharing: false,
+        canDebug: false,
         canChangePageFormat: true,
         canChangeOrientation: false,
         pageFormats: const {

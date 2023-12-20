@@ -6,7 +6,7 @@ import 'package:sipeb/data/models/permintaan_model.dart';
 import 'localization_helper.dart';
 
 class PDFHelper {
-  static Future<Uint8List> generatePdf(
+  static Future<Uint8List> generatePB16Pdf(
       PdfPageFormat pageFormat, PermintaanModel permintaan) async {
     final pdf = pw.Document();
 

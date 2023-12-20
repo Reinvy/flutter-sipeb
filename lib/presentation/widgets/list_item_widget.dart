@@ -2,10 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../data/models/item_data_model.dart';
 import '../providers/add_permintaan_provider.dart';
+import 'edit_item_widget.dart';
 
-class ListItemWidget extends ConsumerStatefulWidget {
+class ListItemWidget extends ConsumerWidget {
   const ListItemWidget({
     super.key,
     required this.index,
@@ -22,26 +22,12 @@ class ListItemWidget extends ConsumerStatefulWidget {
   final String stasiun;
 
   @override
-  ConsumerState<ListItemWidget> createState() => _ListItemWidgetState();
-}
+  Widget build(BuildContext context, WidgetRef ref) {
+    final namaC = TextEditingController(text: nama);
+    final fisikC = TextEditingController(text: fisik.toString());
+    final satuanC = TextEditingController(text: satuan);
+    final stasiunC = TextEditingController(text: stasiun);
 
-class _ListItemWidgetState extends ConsumerState<ListItemWidget> {
-  final namaC = TextEditingController();
-  final fisikC = TextEditingController();
-  final satuanC = TextEditingController();
-  final stasiunC = TextEditingController();
-  @override
-  void initState() {
-    namaC.text = widget.nama;
-    fisikC.text = widget.fisik.toString();
-    satuanC.text = widget.satuan;
-    stasiunC.text = widget.stasiun;
-
-    super.initState();
-  }
-
-  @override
-  Widget build(BuildContext context) {
     return Row(
       children: [
         Expanded(
@@ -59,13 +45,11 @@ class _ListItemWidgetState extends ConsumerState<ListItemWidget> {
                 height: 8,
               ),
               TextFormField(
+                readOnly: true,
                 controller: namaC,
                 decoration: const InputDecoration(
                   border: OutlineInputBorder(),
                 ),
-                onChanged: (value) {
-                  setState(() {});
-                },
               ),
             ],
           ),
@@ -88,15 +72,13 @@ class _ListItemWidgetState extends ConsumerState<ListItemWidget> {
                 height: 8,
               ),
               TextFormField(
+                readOnly: true,
                 controller: fisikC,
                 keyboardType: TextInputType.number,
                 inputFormatters: [FilteringTextInputFormatter.digitsOnly],
                 decoration: const InputDecoration(
                   border: OutlineInputBorder(),
                 ),
-                onChanged: (value) {
-                  setState(() {});
-                },
               ),
             ],
           ),
@@ -119,13 +101,11 @@ class _ListItemWidgetState extends ConsumerState<ListItemWidget> {
                 height: 8,
               ),
               TextFormField(
+                readOnly: true,
                 controller: satuanC,
                 decoration: const InputDecoration(
                   border: OutlineInputBorder(),
                 ),
-                onChanged: (value) {
-                  setState(() {});
-                },
               ),
             ],
           ),
@@ -151,42 +131,39 @@ class _ListItemWidgetState extends ConsumerState<ListItemWidget> {
                 children: [
                   Expanded(
                     child: TextFormField(
+                      readOnly: true,
                       controller: stasiunC,
                       decoration: const InputDecoration(
                         border: OutlineInputBorder(),
                       ),
-                      onChanged: (value) {
-                        setState(() {});
-                      },
+                      onChanged: (value) {},
                     ),
                   ),
                   const SizedBox(
                     width: 10,
                   ),
-                  if (namaC.text != widget.nama ||
-                      int.tryParse(fisikC.text) != widget.fisik ||
-                      satuanC.text != widget.satuan ||
-                      stasiunC.text != widget.stasiun)
-                    Center(
-                      child: ElevatedButton(
-                        style: ElevatedButton.styleFrom(
-                          fixedSize: const Size(48, 48),
-                        ),
-                        onPressed: () {
-                          ref.read(listItemProvider.notifier).state += [
-                            ItemDataModel(
-                              id: null,
-                              permintaanId: 0,
-                              namaBarang: "namaBarang",
-                              fisik: 1,
-                              satuan: "satuan",
-                              keperluan: "keperluan",
-                            ),
-                          ];
-                        },
-                        child: const Icon(Icons.edit),
+                  Center(
+                    child: ElevatedButton(
+                      style: ElevatedButton.styleFrom(
+                        fixedSize: const Size(48, 48),
                       ),
+                      onPressed: () {
+                        showDialog(
+                          context: context,
+                          builder: (context) {
+                            return EditItemWidget(
+                              index: index,
+                              nama: nama,
+                              fisik: fisik,
+                              satuan: satuan,
+                              stasiun: stasiun,
+                            );
+                          },
+                        );
+                      },
+                      child: const Icon(Icons.edit),
                     ),
+                  ),
                   const SizedBox(
                     width: 10,
                   ),
@@ -197,13 +174,12 @@ class _ListItemWidgetState extends ConsumerState<ListItemWidget> {
                         backgroundColor: Colors.red,
                       ),
                       onPressed: () {
-                        print(widget.index);
-
-                        ref
-                            .watch(listItemProvider.notifier)
-                            .state
-                            .removeAt(widget.index);
-                        setState(() {});
+                        final data = ref.read(listItemProvider);
+                        print(data.length);
+                        data.removeAt(index);
+                        print(data.length);
+                        ref.read(listItemProvider.notifier).state =
+                            List.from(data);
                       },
                       child: const Icon(Icons.delete),
                     ),
