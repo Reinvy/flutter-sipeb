@@ -4,12 +4,13 @@ import 'package:sipeb/helpers/database_helper.dart';
 import 'package:sipeb/helpers/localization_helper.dart';
 import 'package:sipeb/data/models/permintaan_model.dart';
 import 'package:sipeb/presentation/providers/permintaan_provider.dart';
+import 'package:sipeb/presentation/screens/add_permintaan_screen.dart';
 import 'package:sipeb/presentation/screens/preview_screen.dart';
 
 import '../../data/models/item_data_model.dart';
 
-class MemoPermintaanScreen extends ConsumerWidget {
-  const MemoPermintaanScreen({super.key});
+class PermintaanScreen extends ConsumerWidget {
+  const PermintaanScreen({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -250,8 +251,14 @@ class MemoPermintaanScreen extends ConsumerWidget {
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () async {
-          await DatabaseHelper().insertPermintaan(permintaans1.first);
-          ref.invalidate(getAllPermintaanProvider);
+          // await DatabaseHelper().insertPermintaan(permintaans1.first);
+          // ref.invalidate(getAllPermintaanProvider);
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => AddPermintaanScreen(),
+            ),
+          );
         },
       ),
     );
