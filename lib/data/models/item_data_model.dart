@@ -21,6 +21,7 @@ class ItemDataModel {
     return ItemDataModel(
       id: map['id'],
       permintaanId: map['permintaanId'],
+      // date: DateTime.now(),
       date: DateTime.parse(map['date']),
       namaBarang: map['namaBarang'],
       fisik: map['fisik'],

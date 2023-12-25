@@ -73,12 +73,16 @@ class DatabaseHelper {
       List<PermintaanModel> permintaans = permintaanMaps.map((permintaanMap) {
         return PermintaanModel.fromMap(permintaanMap);
       }).toList();
+
       for (PermintaanModel permintaan in permintaans) {
         List<Map<String, dynamic>> itemMaps = await db.query('itemData',
             where: 'permintaanId = ?', whereArgs: [permintaan.id]);
+
+        print(itemMaps);
         List<ItemDataModel> items = itemMaps.map((itemMap) {
           return ItemDataModel.fromMap(itemMap);
         }).toList();
+
         permintaan.items = items;
       }
 
@@ -115,15 +119,41 @@ class DatabaseHelper {
       return ItemDataModel.fromMap(itemMap);
     }).toList();
 
-    for (ItemDataModel item in items) {
-      await db.update('itemData', item.toMap(),
-          where: 'id = ?', whereArgs: [item.id]);
+    for (ItemDataModel item in permintaan.items) {
+      item.date = permintaan.date;
+      if (item.id == null) {
+        print("tambah");
+        print(item.namaBarang);
+        item.permintaanId = permintaan.id!;
+        await db.insert('itemData', item.toMap());
+      } else {
+        print("update");
+        print(item.namaBarang);
+        await db.update('itemData', item.toMap(),
+            where: 'id = ?', whereArgs: [item.id]);
+      }
     }
 
-    for (ItemDataModel item in permintaan.items) {
-      item.permintaanId = permintaan.id!;
-      await db.insert('itemData', item.toMap());
+    for (var element in items) {
+      if (permintaan.items.any((e) => e.id == element.id)) {
+        continue;
+      }
+      print("hapus");
+      print(element.namaBarang);
+      await db.delete('itemData', where: 'id = ?', whereArgs: [element.id]);
     }
+
+    // for (ItemDataModel item in items) {
+    //   item.date = permintaan.date;
+    //   await db.update('itemData', item.toMap(),
+    //       where: 'id = ?', whereArgs: [item.id]);
+    // }
+
+    // for (ItemDataModel item in permintaan.items) {
+    //   item.permintaanId = permintaan.id!;
+    //   item.date = permintaan.date;
+    //   await db.insert('itemData', item.toMap());
+    // }
   }
 
   Future<void> deletePermintaan(int id) async {

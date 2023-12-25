@@ -10,19 +10,25 @@ import '../../helpers/localization_helper.dart';
 import '../widgets/add_item_widget.dart';
 import '../widgets/list_item_widget.dart';
 
-class AddPermintaanScreen extends ConsumerWidget {
-  const AddPermintaanScreen({super.key});
+class EditPermintaanScreen extends ConsumerWidget {
+  const EditPermintaanScreen({
+    super.key,
+    required this.permintaanId,
+  });
+  final int permintaanId;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final key = GlobalKey<FormState>();
     final listItem = ref.watch(listItemProvider);
+    final key = GlobalKey<FormState>();
     final dateC = ref.watch(dateCProvider.notifier).state;
+    print(dateC.text);
     final shiftC = ref.watch(shiftCProvider.notifier).state;
+    print(shiftC.text);
     final nameRequestedByC = ref.watch(nameRequestedByCProvider.notifier).state;
     return Scaffold(
       appBar: AppBar(
-        title: const Text("Buat Permintaan"),
+        title: const Text("Edit Permintaan"),
       ),
       body: SafeArea(
         child: Form(
@@ -213,9 +219,9 @@ class AddPermintaanScreen extends ConsumerWidget {
                           ),
                         );
                       } else {
-                        await DatabaseHelper().insertPermintaan(
+                        await DatabaseHelper().updatePermintaan(
                           PermintaanModel(
-                            id: null,
+                            id: permintaanId,
                             date: LocalizationHelper.reversedFormatTgl(
                               dateC.text,
                             ),

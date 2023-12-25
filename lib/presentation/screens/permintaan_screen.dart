@@ -4,6 +4,7 @@ import 'package:sipeb/helpers/localization_helper.dart';
 import 'package:sipeb/presentation/providers/permintaan_provider.dart';
 
 import '../widgets/list_permintaan_widget.dart';
+import 'add_permintaan_screen.dart';
 
 class PermintaanScreen extends ConsumerWidget {
   const PermintaanScreen({super.key});
@@ -21,7 +22,7 @@ class PermintaanScreen extends ConsumerWidget {
           Padding(
             padding: const EdgeInsets.all(20),
             child: TextFormField(
-              decoration: InputDecoration(
+              decoration: const InputDecoration(
                 hintText: "Tanggal, Nama Barang, Diminta Oleh",
                 prefixIcon: Icon(Icons.search),
                 border: OutlineInputBorder(),
@@ -55,15 +56,12 @@ class PermintaanScreen extends ConsumerWidget {
         margin: const EdgeInsets.only(right: 20, bottom: 20),
         child: FloatingActionButton(
           onPressed: () async {
-            LocalizationHelper.dada();
-            // await DatabaseHelper().insertPermintaan(permintaans1.first);
-            // ref.invalidate(getAllPermintaanProvider);
-            // Navigator.push(
-            //   context,
-            //   MaterialPageRoute(
-            //     builder: (context) => AddPermintaanScreen(),
-            //   ),
-            // );
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => const AddPermintaanScreen(),
+              ),
+            );
           },
           child: const Icon(Icons.add),
         ),

@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:sipeb/presentation/screens/edit_permintaan_screen.dart';
 
 import '../../data/models/permintaan_model.dart';
 import '../../helpers/database_helper.dart';
 import '../../helpers/localization_helper.dart';
+import '../providers/add_permintaan_provider.dart';
 import '../providers/permintaan_provider.dart';
 import '../screens/preview_screen.dart';
 
@@ -23,11 +25,8 @@ class ListPermintaanWidget extends ConsumerWidget {
         data.sort(
           (a, b) => b.date.compareTo(a.date),
         );
+
         return GestureDetector(
-          onLongPress: () {
-            DatabaseHelper().deletePermintaan(data[i].id!);
-            ref.invalidate(getAllPermintaanProvider);
-          },
           onTap: () {
             Navigator.push(
               context,
@@ -165,12 +164,88 @@ class ListPermintaanWidget extends ConsumerWidget {
                             Row(
                               children: [
                                 Text(
-                                  "- ${e.namaBarang} ${e.fisik} ${e.satuan}",
+                                  "- ${e.namaBarang} ${e.fisik} ${e.satuan} untuk stasiun ${e.keperluan}",
                                 ),
                               ],
                             ),
                         ],
                       ),
+                    ),
+                    ElevatedButton(
+                        onPressed: () {
+                          ref.watch(dateCProvider.notifier).state.text =
+                              LocalizationHelper.formatTgl(
+                            data[i].date,
+                          );
+                          ref.watch(shiftCProvider.notifier).state.text =
+                              data[i].shift;
+                          ref
+                              .watch(nameRequestedByCProvider.notifier)
+                              .state
+                              .text = data[i].nameRequestedBy;
+                          ref.watch(listItemProvider.notifier).state =
+                              data[i].items;
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => EditPermintaanScreen(
+                                  permintaanId: data[i].id!),
+                            ),
+                          ).then((value) {
+                            ref.invalidate(dateCProvider);
+                            ref.invalidate(shiftCProvider);
+                            ref.invalidate(nameRequestedByCProvider);
+                            ref.invalidate(listItemProvider);
+                            ref.invalidate(searchPermintaan);
+                          });
+                        },
+                        child: Text("Edit")),
+                    SizedBox(
+                      width: 8,
+                    ),
+                    ElevatedButton(
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: Colors.red,
+                      ),
+                      onPressed: () {
+                        showDialog(
+                          context: context,
+                          builder: (context) {
+                            return AlertDialog(
+                              title: Center(
+                                  child: Text(
+                                "Hapus Permintaan",
+                                style: TextStyle(
+                                    color: Theme.of(context).primaryColor),
+                              )),
+                              content: const Text(
+                                  "Apakah anda ingin menghapus permintaan?"),
+                              actions: [
+                                ElevatedButton(
+                                  style: ElevatedButton.styleFrom(
+                                      backgroundColor: Colors.red),
+                                  onPressed: () async {
+                                    final navigator = Navigator.of(context);
+                                    await DatabaseHelper()
+                                        .deletePermintaan(data[i].id!);
+                                    ref.invalidate(searchPermintaan);
+                                    navigator.pop();
+                                  },
+                                  child: const Text("Hapus"),
+                                ),
+                                ElevatedButton(
+                                  onPressed: () {
+                                    final navigator = Navigator.of(context);
+                                    navigator.pop();
+                                  },
+                                  child: const Text("Batal"),
+                                ),
+                              ],
+                            );
+                          },
+                        );
+                      },
+                      child: Text("Hapus"),
                     ),
                   ],
                 ),

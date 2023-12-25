@@ -10,7 +10,7 @@ class BarGraphCard extends StatelessWidget {
 
   final List<BarGraphModel> data = [
     BarGraphModel(
-        lable: "PB 16",
+        lable: "Boiler",
         color: Color.fromARGB(248, 197, 252, 44),
         graph: [
           GraphModel(x: 0, y: 8),
@@ -26,7 +26,7 @@ class BarGraphCard extends StatelessWidget {
         color: const Color.fromARGB(255, 241, 179, 117),
         graph: [
           GraphModel(x: 0, y: 8),
-          GraphModel(x: 1, y: 10),
+          GraphModel(x: 1, y: 11),
           GraphModel(x: 2, y: 9),
           GraphModel(x: 3, y: 7),
           GraphModel(x: 4, y: 6),
@@ -44,7 +44,7 @@ class BarGraphCard extends StatelessWidget {
       shrinkWrap: true,
       physics: const ScrollPhysics(),
       gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-          crossAxisCount: 2,
+          crossAxisCount: 5,
           crossAxisSpacing: 15,
           mainAxisSpacing: 12.0,
           childAspectRatio: 5 / 4),

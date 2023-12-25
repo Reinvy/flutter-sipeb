@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:sipeb/data/models/item_data_model.dart';
 
 import '../providers/add_permintaan_provider.dart';
 import 'edit_item_widget.dart';
@@ -9,24 +10,26 @@ class ListItemWidget extends ConsumerWidget {
   const ListItemWidget({
     super.key,
     required this.index,
-    required this.nama,
-    required this.fisik,
-    required this.satuan,
-    required this.stasiun,
+    required this.item,
+    // required this.nama,
+    // required this.fisik,
+    // required this.satuan,
+    // required this.stasiun,
   });
 
   final int index;
-  final String nama;
-  final int fisik;
-  final String satuan;
-  final String stasiun;
+  final ItemDataModel item;
+  // final String nama;
+  // final int fisik;
+  // final String satuan;
+  // final String stasiun;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final namaC = TextEditingController(text: nama);
-    final fisikC = TextEditingController(text: fisik.toString());
-    final satuanC = TextEditingController(text: satuan);
-    final stasiunC = TextEditingController(text: stasiun);
+    final namaC = TextEditingController(text: item.namaBarang);
+    final fisikC = TextEditingController(text: item.fisik.toString());
+    final satuanC = TextEditingController(text: item.satuan);
+    final stasiunC = TextEditingController(text: item.keperluan);
 
     return Row(
       children: [
@@ -153,10 +156,7 @@ class ListItemWidget extends ConsumerWidget {
                           builder: (context) {
                             return EditItemWidget(
                               index: index,
-                              nama: nama,
-                              fisik: fisik,
-                              satuan: satuan,
-                              stasiun: stasiun,
+                              item: item,
                             );
                           },
                         );

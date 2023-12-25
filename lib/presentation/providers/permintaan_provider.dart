@@ -3,13 +3,13 @@ import 'package:sipeb/data/models/permintaan_model.dart';
 import 'package:sipeb/helpers/database_helper.dart';
 import 'package:sipeb/helpers/localization_helper.dart';
 
-final getAllPermintaanProvider =
-    FutureProvider.autoDispose<List<PermintaanModel>>(
-  (ref) {
-    final localData = DatabaseHelper();
-    return localData.getAllPermintaan();
-  },
-);
+// final getAllPermintaanProvider =
+//     FutureProvider.autoDispose<List<PermintaanModel>>(
+//   (ref) {
+//     final localData = DatabaseHelper();
+//     return localData.getAllPermintaan();
+//   },
+// );
 
 final searchPermintaan = FutureProvider.autoDispose<List<PermintaanModel>>(
   (ref) async {
