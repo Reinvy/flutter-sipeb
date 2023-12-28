@@ -21,7 +21,6 @@ class ItemDataModel {
     return ItemDataModel(
       id: map['id'],
       permintaanId: map['permintaanId'],
-      // date: DateTime.now(),
       date: DateTime.parse(map['date']),
       namaBarang: map['namaBarang'],
       fisik: map['fisik'],
@@ -40,5 +39,27 @@ class ItemDataModel {
       'satuan': satuan,
       'keperluan': keperluan,
     };
+  }
+
+  Map<String, dynamic> toJson() => {
+        'id': id,
+        'permintaanId': permintaanId,
+        'date': date?.toIso8601String(),
+        'namaBarang': namaBarang,
+        'fisik': fisik,
+        'satuan': satuan,
+        'keperluan': keperluan,
+      };
+
+  factory ItemDataModel.fromJson(Map<String, dynamic> json) {
+    return ItemDataModel(
+      id: json['id'],
+      permintaanId: json['permintaanId'],
+      date: json['date'] != null ? DateTime.parse(json['date']) : null,
+      namaBarang: json['namaBarang'],
+      fisik: json['fisik'],
+      satuan: json['satuan'],
+      keperluan: json['keperluan'],
+    );
   }
 }

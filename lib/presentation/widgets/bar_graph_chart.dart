@@ -1,44 +1,67 @@
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
+import 'package:sipeb/data/models/item_data_model.dart';
+import 'package:sipeb/data/models/stasiun_model.dart';
 
 import '../../data/models/bar_graph_model.dart';
 import '../../data/models/graph_model.dart';
 import 'custom_card.dart';
 
 class BarGraphCard extends StatelessWidget {
-  BarGraphCard({super.key});
+  BarGraphCard({super.key, required this.thisMonthData});
 
+  final List<ItemDataModel> thisMonthData;
   final List<BarGraphModel> data = [
-    BarGraphModel(
-        lable: "Boiler",
-        color: Color.fromARGB(248, 197, 252, 44),
-        graph: [
-          GraphModel(x: 0, y: 8),
-          GraphModel(x: 1, y: 10),
-          GraphModel(x: 2, y: 7),
-          GraphModel(x: 3, y: 4),
-          GraphModel(x: 4, y: 4),
-          GraphModel(x: 5, y: 6),
-          GraphModel(x: 6, y: 6),
-        ]),
-    BarGraphModel(
-        lable: "AU 58",
-        color: const Color.fromARGB(255, 241, 179, 117),
-        graph: [
-          GraphModel(x: 0, y: 8),
-          GraphModel(x: 1, y: 11),
-          GraphModel(x: 2, y: 9),
-          GraphModel(x: 3, y: 7),
-          GraphModel(x: 4, y: 6),
-          GraphModel(x: 5, y: 5),
-          GraphModel(x: 6, y: 5),
-        ]),
+    // BarGraphModel(
+    //     lable: "Boiler",
+    //     color: Color.fromARGB(248, 197, 252, 44),
+    //     graph: [
+    //       GraphModel(x: 0, y: 8),
+    //       GraphModel(x: 1, y: 10),
+    //       GraphModel(x: 2, y: 7),
+    //       GraphModel(x: 3, y: 4),
+    //       GraphModel(x: 4, y: 4),
+    //       GraphModel(x: 5, y: 6),
+    //       GraphModel(x: 6, y: 6),
+    //     ]),
+    // BarGraphModel(
+    //     lable: "AU 58",
+    //     color: const Color.fromARGB(255, 241, 179, 117),
+    //     graph: [
+    //       GraphModel(x: 0, y: 8),
+    //       GraphModel(x: 1, y: 11),
+    //       GraphModel(x: 2, y: 9),
+    //       GraphModel(x: 3, y: 7),
+    //       GraphModel(x: 4, y: 6),
+    //       GraphModel(x: 5, y: 5),
+    //       GraphModel(x: 6, y: 5),
+    //     ]),
   ];
 
   final lable = ['S', 'S', 'R', 'K', 'J', 'S', 'M'];
 
   @override
   Widget build(BuildContext context) {
+    DateTime sekarang = DateTime.now();
+    int hariDalamSeminggu = sekarang.weekday;
+    int selisih = hariDalamSeminggu - 1;
+    DateTime seninMingguIni = sekarang.subtract(Duration(days: selisih));
+
+    for (var e in listStasiun) {
+      List<GraphModel> graph = [];
+      final thisStasiunData =
+          thisMonthData.where((item) => e.name == item.keperluan);
+      for (var i = seninMingguIni.day; i < seninMingguIni.day + 7; i++) {
+        graph.add(GraphModel(
+            x: i.toDouble() - seninMingguIni.day,
+            y: thisStasiunData
+                .where((item) => item.date!.day == i)
+                .length
+                .toDouble()));
+      }
+      data.add(BarGraphModel(lable: e.name, color: Colors.red, graph: graph));
+    }
+
     return GridView.builder(
       itemCount: data.length,
       shrinkWrap: true,
@@ -112,7 +135,7 @@ class BarGraphCard extends StatelessWidget {
               BarChartRodData(
                 toY: point.y,
                 width: 20,
-                color: color.withOpacity(point.y.toInt() > 4 ? 1 : 0.4),
+                color: color,
                 borderRadius: const BorderRadius.only(
                   topLeft: Radius.circular(3.0),
                   topRight: Radius.circular(3.0),

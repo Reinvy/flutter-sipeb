@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:sipeb/presentation/screens/edit_permintaan_screen.dart';
 
+import '../../data/datasources/local_datasource.dart';
 import '../../data/models/permintaan_model.dart';
-import '../../helpers/database_helper.dart';
 import '../../helpers/localization_helper.dart';
 import '../providers/add_permintaan_provider.dart';
 import '../providers/permintaan_provider.dart';
@@ -226,8 +226,8 @@ class ListPermintaanWidget extends ConsumerWidget {
                                       backgroundColor: Colors.red),
                                   onPressed: () async {
                                     final navigator = Navigator.of(context);
-                                    await DatabaseHelper()
-                                        .deletePermintaan(data[i].id!);
+                                    final localDS = LocalDataSource();
+                                    await localDS.deletePermintaan(data[i].id!);
                                     ref.invalidate(searchPermintaan);
                                     navigator.pop();
                                   },

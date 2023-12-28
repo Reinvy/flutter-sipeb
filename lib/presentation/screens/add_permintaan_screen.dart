@@ -1,8 +1,8 @@
 import 'package:dropdown_search/dropdown_search.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:sipeb/data/datasources/local_datasource.dart';
 import 'package:sipeb/data/models/permintaan_model.dart';
-import 'package:sipeb/helpers/database_helper.dart';
 import 'package:sipeb/presentation/providers/add_permintaan_provider.dart';
 import 'package:sipeb/presentation/providers/permintaan_provider.dart';
 
@@ -200,6 +200,7 @@ class AddPermintaanScreen extends ConsumerWidget {
                   onPressed: () async {
                     if (key.currentState!.validate()) {
                       final navigator = Navigator.of(context);
+                      final localDS = LocalDataSource();
                       if (ref.read(listItemProvider).isEmpty) {
                         showDialog(
                           context: context,
@@ -213,7 +214,7 @@ class AddPermintaanScreen extends ConsumerWidget {
                           ),
                         );
                       } else {
-                        await DatabaseHelper().insertPermintaan(
+                        await localDS.insertPermintaan(
                           PermintaanModel(
                             id: null,
                             date: LocalizationHelper.reversedFormatTgl(

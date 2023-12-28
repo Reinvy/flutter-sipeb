@@ -44,4 +44,32 @@ class PermintaanModel {
       'nameRequestedBy': nameRequestedBy,
     };
   }
+
+  Map<String, dynamic> toJson() => {
+        'id': id,
+        'date': date.toIso8601String(),
+        'knownBy': knownBy,
+        'nameKnownBy': nameKnownBy,
+        'shift': shift,
+        'requestBy': requestBy,
+        'nameRequestedBy': nameRequestedBy,
+        'items': items.map((item) => item.toJson()).toList(),
+      };
+
+  factory PermintaanModel.fromJson(Map<String, dynamic> json) {
+    var list = json['items'] as List;
+    List<ItemDataModel> itemsList =
+        list.map((i) => ItemDataModel.fromJson(i)).toList();
+
+    return PermintaanModel(
+      id: json['id'],
+      date: DateTime.parse(json['date']),
+      knownBy: json['knownBy'],
+      nameKnownBy: json['nameKnownBy'],
+      shift: json['shift'],
+      requestBy: json['requestBy'],
+      nameRequestedBy: json['nameRequestedBy'],
+      items: itemsList,
+    );
+  }
 }

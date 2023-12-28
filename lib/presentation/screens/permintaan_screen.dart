@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:sipeb/helpers/localization_helper.dart';
 import 'package:sipeb/presentation/providers/permintaan_provider.dart';
 
 import '../widgets/list_permintaan_widget.dart';
