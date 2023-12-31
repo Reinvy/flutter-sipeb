@@ -182,10 +182,6 @@ class EditPermintaanScreen extends ConsumerWidget {
                           return ListItemWidget(
                             index: i,
                             item: listItem[i],
-                            // nama: listItem[i].namaBarang,
-                            // fisik: listItem[i].fisik,
-                            // satuan: listItem[i].satuan,
-                            // stasiun: listItem[i].keperluan,
                           );
                         },
                         separatorBuilder: (context, index) => const SizedBox(
@@ -239,7 +235,7 @@ class EditPermintaanScreen extends ConsumerWidget {
                       }
                     }
                   },
-                  child: Text("Buat Permintaan"),
+                  child: Text("Edit Permintaan"),
                 ),
               )
             ],

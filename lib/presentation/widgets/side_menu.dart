@@ -23,7 +23,19 @@ class SideMenu extends ConsumerWidget {
     return Scaffold(
       appBar: AppBar(
         elevation: 1,
-        title: const Text("SIP PB-16"),
+        title: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Image.asset(
+              "assets/logo_ptpn1.png",
+              height: 40,
+            ),
+            const SizedBox(
+              width: 8,
+            ),
+            const Text("SIP PB-16"),
+          ],
+        ),
         centerTitle: true,
       ),
       body: Center(

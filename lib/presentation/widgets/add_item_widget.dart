@@ -152,7 +152,8 @@ class AddItemWidget extends ConsumerWidget {
                           ),
                         ),
                         popupProps: const PopupProps.menu(
-                          // showSelectedItems: true,
+                          showSearchBox: true,
+                          searchDelay: Duration(seconds: 0),
                           fit: FlexFit.loose,
                         ),
                         itemAsString: (item) => item.name,

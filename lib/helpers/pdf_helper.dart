@@ -185,6 +185,7 @@ class PDFHelper {
                       pw.Text(
                         permintaan.nameKnownBy,
                         style: pw.TextStyle(
+                          fontStyle: pw.FontStyle.italic,
                           fontWeight: pw.FontWeight.bold,
                           decoration: pw.TextDecoration.underline,
                         ),
@@ -198,11 +199,13 @@ class PDFHelper {
                       ),
                       pw.SizedBox(height: 12),
                       pw.Text("Di minta Oleh"),
-                      pw.Text(permintaan.requestBy),
+                      pw.Text(
+                          "${permintaan.requestBy} Shift ${permintaan.shift}"),
                       pw.SizedBox(height: 60),
                       pw.Text(
                         permintaan.nameRequestedBy,
                         style: pw.TextStyle(
+                          fontStyle: pw.FontStyle.italic,
                           fontWeight: pw.FontWeight.bold,
                           decoration: pw.TextDecoration.underline,
                         ),

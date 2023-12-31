@@ -67,7 +67,7 @@ class BarGraphCard extends StatelessWidget {
       shrinkWrap: true,
       physics: const ScrollPhysics(),
       gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-          crossAxisCount: 5,
+          crossAxisCount: 4,
           crossAxisSpacing: 15,
           mainAxisSpacing: 12.0,
           childAspectRatio: 5 / 4),
@@ -91,35 +91,36 @@ class BarGraphCard extends StatelessWidget {
                 Expanded(
                   child: BarChart(
                     BarChartData(
-                      barGroups: _chartGroups(
-                          points: data[i].graph, color: data[i].color),
-                      borderData: FlBorderData(border: const Border()),
-                      gridData: FlGridData(show: false),
-                      titlesData: FlTitlesData(
-                        bottomTitles: AxisTitles(
-                            sideTitles: SideTitles(
-                          showTitles: true,
-                          getTitlesWidget: (value, meta) {
-                            return Padding(
-                              padding: const EdgeInsets.only(top: 5),
-                              child: Text(
-                                lable[value.toInt()],
-                                style: const TextStyle(
-                                    fontSize: 12,
-                                    color: Colors.grey,
-                                    fontWeight: FontWeight.w500),
-                              ),
-                            );
-                          },
-                        )),
-                        leftTitles: AxisTitles(
-                            sideTitles: SideTitles(showTitles: false)),
-                        topTitles: AxisTitles(
-                            sideTitles: SideTitles(showTitles: false)),
-                        rightTitles: AxisTitles(
-                            sideTitles: SideTitles(showTitles: false)),
-                      ),
-                    ),
+                        barGroups: _chartGroups(
+                            points: data[i].graph, color: data[i].color),
+                        borderData: FlBorderData(border: const Border()),
+                        gridData: FlGridData(show: false),
+                        titlesData: FlTitlesData(
+                          bottomTitles: AxisTitles(
+                              sideTitles: SideTitles(
+                            showTitles: true,
+                            getTitlesWidget: (value, meta) {
+                              return Padding(
+                                padding: const EdgeInsets.only(top: 5),
+                                child: Text(
+                                  lable[value.toInt()],
+                                  style: const TextStyle(
+                                      fontSize: 12,
+                                      color: Colors.grey,
+                                      fontWeight: FontWeight.w500),
+                                ),
+                              );
+                            },
+                          )),
+                          leftTitles: AxisTitles(
+                              sideTitles: SideTitles(showTitles: false)),
+                          topTitles: AxisTitles(
+                              sideTitles: SideTitles(showTitles: false)),
+                          rightTitles: AxisTitles(
+                              sideTitles: SideTitles(showTitles: false)),
+                        ),
+                        minY: 0,
+                        maxY: 5),
                   ),
                 ),
               ],

@@ -1,11 +1,10 @@
 import 'dart:convert';
 
 import 'package:dio/dio.dart';
+import 'package:sipeb/constants.dart';
 import 'package:sipeb/data/models/permintaan_model.dart';
 
 class BackupDataSource {
-  final backupUrl =
-      "https://pmmb-batch-2-2023-ptpn-1-default-rtdb.asia-southeast1.firebasedatabase.app/backup/.json";
   final _dio = Dio();
 
   Future backupData(List<PermintaanModel> permintaans) async {

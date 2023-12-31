@@ -9,6 +9,7 @@ import 'package:sipeb/presentation/providers/permintaan_provider.dart';
 import '../../helpers/localization_helper.dart';
 import '../widgets/add_item_widget.dart';
 import '../widgets/list_item_widget.dart';
+import 'preview_screen.dart';
 
 class AddPermintaanScreen extends ConsumerWidget {
   const AddPermintaanScreen({super.key});
@@ -214,22 +215,27 @@ class AddPermintaanScreen extends ConsumerWidget {
                           ),
                         );
                       } else {
-                        await localDS.insertPermintaan(
-                          PermintaanModel(
-                            id: null,
-                            date: LocalizationHelper.reversedFormatTgl(
-                              dateC.text,
+                        final permintaan = PermintaanModel(
+                          id: null,
+                          date: LocalizationHelper.reversedFormatTgl(
+                            dateC.text,
+                          ),
+                          knownBy: "Asisten Tata Usaha",
+                          nameKnownBy: "T. Zulfikar",
+                          shift: shiftC.text,
+                          requestBy: "Asisten Pengolahan",
+                          nameRequestedBy: nameRequestedByC.text,
+                          items: listItem,
+                        );
+                        await localDS.insertPermintaan(permintaan);
+                        ref.invalidate(searchPermintaan);
+                        navigator.pushReplacement(
+                          MaterialPageRoute(
+                            builder: (context) => PreviewScreen(
+                              permintaan: permintaan,
                             ),
-                            knownBy: "Asisten Tata Usaha",
-                            nameKnownBy: "T. Zulfikar",
-                            shift: shiftC.text,
-                            requestBy: "Asisten Pengolahan",
-                            nameRequestedBy: nameRequestedByC.text,
-                            items: listItem,
                           ),
                         );
-                        ref.invalidate(searchPermintaan);
-                        navigator.pop();
                       }
                     }
                   },
