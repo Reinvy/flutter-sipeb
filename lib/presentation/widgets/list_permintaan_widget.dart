@@ -183,13 +183,17 @@ class ListPermintaanWidget extends ConsumerWidget {
                               .watch(nameRequestedByCProvider.notifier)
                               .state
                               .text = data[i].nameRequestedBy;
+                          ref
+                              .watch(positionRequestedByCProvider.notifier)
+                              .state
+                              .text = data[i].requestBy;
                           ref.watch(listItemProvider.notifier).state =
                               data[i].items;
                           Navigator.push(
                             context,
                             MaterialPageRoute(
-                              builder: (context) => EditPermintaanScreen(
-                                  permintaanId: data[i].id!),
+                              builder: (context) =>
+                                  EditPermintaanScreen(permintaan: data[i]),
                             ),
                           ).then((value) {
                             ref.invalidate(dateCProvider);

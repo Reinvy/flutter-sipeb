@@ -1,6 +1,7 @@
 import 'package:dropdown_search/dropdown_search.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:sipeb/data/models/karpim_model.dart';
 import 'package:sipeb/data/models/permintaan_model.dart';
 import 'package:sipeb/presentation/providers/add_permintaan_provider.dart';
 import 'package:sipeb/presentation/providers/permintaan_provider.dart';
@@ -13,9 +14,9 @@ import '../widgets/list_item_widget.dart';
 class EditPermintaanScreen extends ConsumerWidget {
   const EditPermintaanScreen({
     super.key,
-    required this.permintaanId,
+    required this.permintaan,
   });
-  final int permintaanId;
+  final PermintaanModel permintaan;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -26,6 +27,8 @@ class EditPermintaanScreen extends ConsumerWidget {
     final shiftC = ref.watch(shiftCProvider.notifier).state;
     print(shiftC.text);
     final nameRequestedByC = ref.watch(nameRequestedByCProvider.notifier).state;
+    final positionRequestedByC =
+        ref.watch(positionRequestedByCProvider.notifier).state;
     return Scaffold(
       appBar: AppBar(
         title: const Text("Edit Permintaan"),
@@ -125,7 +128,7 @@ class EditPermintaanScreen extends ConsumerWidget {
                         height: 20,
                       ),
                       const Text(
-                        "Nama Asisten Pengolahan",
+                        "Nama Pemohon",
                         style: TextStyle(
                           fontWeight: FontWeight.bold,
                         ),
@@ -133,26 +136,34 @@ class EditPermintaanScreen extends ConsumerWidget {
                       const SizedBox(
                         height: 8,
                       ),
-                      DropdownSearch<String>(
+                      DropdownSearch<KarpimModel>(
                         dropdownDecoratorProps: const DropDownDecoratorProps(
                           dropdownSearchDecoration: InputDecoration(
-                            hintText: "Silahkan pilih nama asisten pengolahan",
+                            hintText: "Silahkan pilih nama pemohon",
                             border: OutlineInputBorder(),
                             contentPadding:
                                 EdgeInsets.symmetric(horizontal: 12),
                           ),
                         ),
                         popupProps: const PopupProps.menu(
-                          showSelectedItems: true,
                           fit: FlexFit.loose,
                         ),
                         selectedItem: nameRequestedByC.text.isNotEmpty
-                            ? nameRequestedByC.text
+                            ? KarpimModel(
+                                id: null,
+                                name: nameRequestedByC.text,
+                                position: positionRequestedByC.text)
                             : null,
+                        itemAsString: (item) =>
+                            "${item.name} (${item.position})",
                         onChanged: (value) {
-                          nameRequestedByC.text = value!;
+                          nameRequestedByC.text = value!.name;
+                          positionRequestedByC.text = value.position;
                         },
-                        items: const ["RizQy Aulia", "Septian Burhan"],
+                        asyncItems: (text) {
+                          final localData = LocalDataSource();
+                          return localData.getAllKarpim();
+                        },
                         validator: (value) {
                           if (nameRequestedByC.text.isEmpty) {
                             return "Silahkan pilih nama asisten pengolahan";
@@ -218,14 +229,14 @@ class EditPermintaanScreen extends ConsumerWidget {
                       } else {
                         await localDS.updatePermintaan(
                           PermintaanModel(
-                            id: permintaanId,
+                            id: permintaan.id,
                             date: LocalizationHelper.reversedFormatTgl(
                               dateC.text,
                             ),
-                            knownBy: "Asisten Tata Usaha",
-                            nameKnownBy: "T. Zulfikar",
+                            knownBy: permintaan.knownBy,
+                            nameKnownBy: permintaan.nameKnownBy,
                             shift: shiftC.text,
-                            requestBy: "Asisten Pengolahan",
+                            requestBy: positionRequestedByC.text,
                             nameRequestedBy: nameRequestedByC.text,
                             items: listItem,
                           ),

@@ -2,6 +2,7 @@ import 'package:dropdown_search/dropdown_search.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:sipeb/data/datasources/local_datasource.dart';
+import 'package:sipeb/data/models/karpim_model.dart';
 import 'package:sipeb/data/models/permintaan_model.dart';
 import 'package:sipeb/presentation/providers/add_permintaan_provider.dart';
 import 'package:sipeb/presentation/providers/permintaan_provider.dart';
@@ -21,6 +22,8 @@ class AddPermintaanScreen extends ConsumerWidget {
     final dateC = ref.watch(dateCProvider.notifier).state;
     final shiftC = ref.watch(shiftCProvider.notifier).state;
     final nameRequestedByC = ref.watch(nameRequestedByCProvider.notifier).state;
+    final positionRequestedByC =
+        ref.watch(positionRequestedByCProvider.notifier).state;
     return Scaffold(
       appBar: AppBar(
         title: const Text("Buat Permintaan"),
@@ -120,7 +123,7 @@ class AddPermintaanScreen extends ConsumerWidget {
                         height: 20,
                       ),
                       const Text(
-                        "Nama Asisten Pengolahan",
+                        "Nama Pemohon",
                         style: TextStyle(
                           fontWeight: FontWeight.bold,
                         ),
@@ -128,26 +131,28 @@ class AddPermintaanScreen extends ConsumerWidget {
                       const SizedBox(
                         height: 8,
                       ),
-                      DropdownSearch<String>(
+                      DropdownSearch<KarpimModel>(
                         dropdownDecoratorProps: const DropDownDecoratorProps(
                           dropdownSearchDecoration: InputDecoration(
-                            hintText: "Silahkan pilih nama asisten pengolahan",
+                            hintText: "Silahkan pilih nama pemohon",
                             border: OutlineInputBorder(),
                             contentPadding:
                                 EdgeInsets.symmetric(horizontal: 12),
                           ),
                         ),
                         popupProps: const PopupProps.menu(
-                          showSelectedItems: true,
                           fit: FlexFit.loose,
                         ),
-                        selectedItem: nameRequestedByC.text.isNotEmpty
-                            ? nameRequestedByC.text
-                            : null,
+                        itemAsString: (item) =>
+                            "${item.name} (${item.position})",
                         onChanged: (value) {
-                          nameRequestedByC.text = value!;
+                          nameRequestedByC.text = value!.name;
+                          positionRequestedByC.text = value.position;
                         },
-                        items: const ["RizQy Aulia", "Septian Burhan"],
+                        asyncItems: (text) {
+                          final localData = LocalDataSource();
+                          return localData.getAllKarpim();
+                        },
                         validator: (value) {
                           if (nameRequestedByC.text.isEmpty) {
                             return "Silahkan pilih nama asisten pengolahan";
@@ -177,10 +182,6 @@ class AddPermintaanScreen extends ConsumerWidget {
                           return ListItemWidget(
                             index: i,
                             item: listItem[i],
-                            // nama: listItem[i].namaBarang,
-                            // fisik: listItem[i].fisik,
-                            // satuan: listItem[i].satuan,
-                            // stasiun: listItem[i].keperluan,
                           );
                         },
                         separatorBuilder: (context, index) => const SizedBox(
@@ -215,15 +216,18 @@ class AddPermintaanScreen extends ConsumerWidget {
                           ),
                         );
                       } else {
+                        final karpim = await localDS.getAllKarpim();
+                        final diketahui = karpim.firstWhere((element) =>
+                            element.position == "Asisten Tata Usaha");
                         final permintaan = PermintaanModel(
                           id: null,
                           date: LocalizationHelper.reversedFormatTgl(
                             dateC.text,
                           ),
-                          knownBy: "Asisten Tata Usaha",
-                          nameKnownBy: "T. Zulfikar",
+                          knownBy: diketahui.position,
+                          nameKnownBy: diketahui.name,
                           shift: shiftC.text,
-                          requestBy: "Asisten Pengolahan",
+                          requestBy: positionRequestedByC.text,
                           nameRequestedBy: nameRequestedByC.text,
                           items: listItem,
                         );
@@ -239,7 +243,7 @@ class AddPermintaanScreen extends ConsumerWidget {
                       }
                     }
                   },
-                  child: Text("Buat Permintaan"),
+                  child: const Text("Buat Permintaan"),
                 ),
               )
             ],

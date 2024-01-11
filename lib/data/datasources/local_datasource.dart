@@ -3,6 +3,7 @@
 import 'dart:io' as io;
 import 'package:path/path.dart' as p;
 import 'package:path_provider/path_provider.dart';
+import 'package:sipeb/data/models/karpim_model.dart';
 import 'package:sipeb/helpers/database_helper.dart';
 import 'package:sqflite_common_ffi/sqflite_ffi.dart';
 
@@ -129,5 +130,39 @@ class LocalDataSource {
     for (ItemDataModel item in items) {
       await db.delete('itemData', where: 'id = ?', whereArgs: [item.id]);
     }
+  }
+
+  Future<List<KarpimModel>> getAllKarpim() async {
+    try {
+      Database db = await databaseHelper.initDatabase();
+      List<Map<String, dynamic>> karpimMaps = await db.query('karpim');
+      List<KarpimModel> karpims = karpimMaps.map((karpimMap) {
+        return KarpimModel.fromMap(karpimMap);
+      }).toList();
+      return karpims;
+    } catch (e) {
+      print(e);
+      rethrow;
+    }
+  }
+
+  Future<void> updateKarpim(KarpimModel karpim) async {
+    Database db = await databaseHelper.initDatabase();
+    await db.update('karpim', karpim.toMap(),
+        where: 'id = ?', whereArgs: [karpim.id]);
+  }
+
+  Future<int> insertKarpim(KarpimModel karpim) async {
+    Database db = await databaseHelper.initDatabase();
+
+    return await db.insert(
+      "karpim",
+      {"name": karpim.name, "position": karpim.position},
+    );
+  }
+
+  Future<void> deleteKarpim(int id) async {
+    Database db = await databaseHelper.initDatabase();
+    await db.delete('karpim', where: 'id = ?', whereArgs: [id]);
   }
 }

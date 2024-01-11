@@ -4,6 +4,7 @@ import 'dart:io' as io;
 import 'package:path/path.dart' as p;
 
 import 'package:path_provider/path_provider.dart';
+import 'package:sipeb/data/models/karpim_model.dart';
 import 'package:sqflite_common_ffi/sqflite_ffi.dart';
 
 class DatabaseHelper {
@@ -18,18 +19,57 @@ class DatabaseHelper {
     var initDb = await databaseFactory.openDatabase(
       path,
     );
-    var res = await initDb.rawQuery(
+    var permintaanDb = await initDb.rawQuery(
         "SELECT name FROM sqlite_master WHERE type='table' AND name=?",
         ["permintaan"]);
-    if (res.isEmpty) {
-      print(res.toString());
-      await _createDb(initDb, 1);
+    var itemDataDb = await initDb.rawQuery(
+        "SELECT name FROM sqlite_master WHERE type='table' AND name=?",
+        ["itemData"]);
+    var karpimDb = await initDb.rawQuery(
+        "SELECT name FROM sqlite_master WHERE type='table' AND name=?",
+        ["karpim"]);
+    if (permintaanDb.isEmpty) {
+      print(permintaanDb.toString());
+      await _createPermintaanDb(initDb, 1);
+    }
+    if (itemDataDb.isEmpty) {
+      print(itemDataDb.toString());
+      await _createItemDataDb(initDb, 1);
+    }
+    if (karpimDb.isEmpty) {
+      print(karpimDb.toString());
+      await _createKarpimDb(initDb, 1);
+
+      List<KarpimModel> initKarpims = [
+        KarpimModel(
+          id: null,
+          name: "T. Zulfikar",
+          position: "Asisten Tata Usaha",
+        ),
+        KarpimModel(
+          id: null,
+          name: "Septian Burhan",
+          position: "Asisten Pengolahan",
+        ),
+        KarpimModel(
+          id: null,
+          name: "RizQy Aulia",
+          position: "Asisten Pengolahan",
+        ),
+      ];
+
+      for (var element in initKarpims) {
+        await initDb.insert(
+          "karpim",
+          {"name": element.name, "position": element.position},
+        );
+      }
     }
 
     return initDb;
   }
 
-  Future<void> _createDb(Database db, int newVersion) async {
+  Future<void> _createPermintaanDb(Database db, int newVersion) async {
     await db.execute('CREATE TABLE permintaan('
         'id INTEGER PRIMARY KEY,'
         'date TEXT,'
@@ -39,7 +79,9 @@ class DatabaseHelper {
         'requestBy TEXT,'
         'nameRequestedBy TEXT'
         ')');
+  }
 
+  Future<void> _createItemDataDb(Database db, int newVersion) async {
     await db.execute('CREATE TABLE itemData('
         'id INTEGER PRIMARY KEY,'
         'permintaanId INTEGER,'
@@ -49,6 +91,14 @@ class DatabaseHelper {
         'satuan TEXT,'
         'keperluan TEXT,'
         'FOREIGN KEY(permintaanId) REFERENCES permintaan(id)'
+        ')');
+  }
+
+  Future<void> _createKarpimDb(Database db, int newVersion) async {
+    await db.execute('CREATE TABLE karpim('
+        'id INTEGER PRIMARY KEY,'
+        'name TEXT,'
+        'position TEXT'
         ')');
   }
 }

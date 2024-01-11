@@ -24,3 +24,7 @@ final nameRequestedByCProvider =
     StateProvider.autoDispose<TextEditingController>((ref) {
   return TextEditingController();
 });
+final positionRequestedByCProvider =
+    StateProvider.autoDispose<TextEditingController>((ref) {
+  return TextEditingController();
+});
