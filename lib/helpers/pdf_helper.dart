@@ -20,7 +20,7 @@ class PDFHelper {
           children: [
             pw.Center(
               child: pw.Text(
-                "PERMINTAAN BARANG PKS TS",
+                "PERMINTAAN BARANG PKS PT",
                 style: pw.TextStyle(
                   fontWeight: pw.FontWeight.bold,
                 ),
@@ -195,7 +195,7 @@ class PDFHelper {
                   pw.Column(
                     children: [
                       pw.Text(
-                        "PKS TS, ${LocalizationHelper.formatTgl(permintaan.date)}",
+                        "PKS PT, ${LocalizationHelper.formatTgl(permintaan.date)}",
                       ),
                       pw.SizedBox(height: 12),
                       pw.Text("Di minta Oleh"),

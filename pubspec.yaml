@@ -31,14 +31,14 @@ dependencies:
   cupertino_icons: ^1.0.2
   dio: ^5.4.0
   dropdown_search: ^5.0.6
-  fl_chart: ^0.62.0
+  fl_chart: ^0.68.0
   flutter:
     sdk: flutter
   flutter_riverpod: ^2.4.9
   intl: ^0.19.0
   path_provider: ^2.1.1
   pdf: ^3.10.7
-  printing: ^5.11.1
+  printing: ^5.13.0
   sqflite: ^2.3.0
   sqflite_common_ffi: ^2.3.1
 
@@ -51,18 +51,18 @@ dev_dependencies:
 flutter_launcher_icons:
   android: "launcher_icon"
   ios: true
-  image_path: "assets/logo_ptpn1.png"
+  image_path: "assets/logo_ptpn4.png"
   min_sdk_android: 21
   web:
     generate: true
-    image_path: "assets/logo_ptpn1.png"
+    image_path: "assets/logo_ptpn4.png"
   windows:
     generate: true
-    image_path: "assets/logo_ptpn1.png"
+    image_path: "assets/logo_ptpn4.png"
     icon_size: 48
   macos:
     generate: true
-    image_path: "assets/logo_ptpn1.png"
+    image_path: "assets/logo_ptpn4.png"
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec

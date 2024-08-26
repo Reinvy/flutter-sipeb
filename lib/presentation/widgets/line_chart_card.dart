@@ -142,7 +142,7 @@ class LineChartCard extends StatelessWidget {
                   maxY: 50,
                   minY: -5,
                 ),
-                swapAnimationDuration: const Duration(milliseconds: 250),
+                duration: const Duration(milliseconds: 250),
               ),
             ),
           ),

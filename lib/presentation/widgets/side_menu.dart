@@ -27,7 +27,7 @@ class SideMenu extends ConsumerWidget {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Image.asset(
-              "assets/logo_ptpn1.png",
+              "assets/logo_ptpn4.png",
               height: 40,
             ),
             const SizedBox(
