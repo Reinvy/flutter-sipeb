@@ -85,6 +85,7 @@ class DashboardScreen extends ConsumerWidget {
                 ),
               ),
               Card(
+                color: Colors.white,
                 child: SizedBox(
                   height: 200,
                   width: 200,
